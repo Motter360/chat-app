@@ -1,0 +1,13 @@
+/*fuck css*/
+
+
+.chat-bubble {
+    background-color: blue;
+    color:black;
+    border-radius: 50%;
+    font-size: .5em;
+}
+
+.time {
+    font-size: .25em;
+}
