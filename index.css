@@ -1,16 +1,38 @@
 /*fuck css*/
 
+.main{
+    width: 100vw;
+}
 
 .chat-bubble {
-    background-color: whitesmoke;
+    background-color: lightgray;
     color:black;
-    border-radius: 50%;
-    font-size: .5em;
+    border-radius: 15px;
+    font-size: 1.5em;
     max-width: 7em;
     text-align: center;
+    justify-content: space-between;
+    margin: 0px 5vw 0px 60vw;
+
+}
+
+.chat-bubble.foreign {
+
+    background-color: blue;
+    color: white;
+    margin: 0px 60vw 0px 5vw;
+    
 }
 
 .time {
     font-size: .25em;
+    margin: 0px 5vw 0px 60vw;
 }
 
+.time.foreign{
+    margin: 0px 60vw 0px 5vw ;
+}
+
+.container{
+    width: 95vw;
+}

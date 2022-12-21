@@ -1,74 +1,93 @@
 runPage();
 
 async function runPage(){
-    await runPusher();
-
     let messages = getMessages();
 
     renderMessages(messages)
+
+    powerSendButton(messages);
 }
 
-async function runPusher () {
-    try {
-        const key = await fetch('./.env');
+function powerSendButton(messages){
+    const button = document.querySelector(".send")
+    const newMessage = document.querySelector(".new-message")
 
-        const pusher = new Pusher(key, {
-            cluster: 'us2'
-        });
+    const callback = () => {
+        let user = getUser(messages)
+        
+        messages.push(createMessage(user, newMessage.value))
+        renderMessages(messages)
+        newMessage.value = ""
+        
+    }
+
+    button.addEventListener("click", callback)
+}
+
+function createMessage(user, messageBody){
     
-        const channel = pusher.subscribe('my-channel');
+    const now = new Date();
 
-        channel.bind('message-sent', function(data) {
-            // add a new message to DOM
-        });
-
-        channel.trigger('message-sent', {
-            // You can include any data you want to send with the event
-            message: 'Hello from the client-side!'
-        });
-    } catch (e) {
-        //
+    return {
+        sentAt: now.toISOString(),
+        sender: `${user.name}`,
+        content: messageBody,
+        source: `${user.source}`,
     }
 }
 
-// Make a function renderMessages that takes the messages array and spits it out to the dom
+function getUser(messages){
+    if(messages.length % 2 === 0) {
+        return {
+            name: "Frank Smith",
+            source: "domestic",
+        }
+    } else {
+        return {
+            name: "John Smith",
+            source: "foreign"
+        }
+    }
+}
+
+
 function renderMessages (messages) {
-    // Get the container
     const chat = document.querySelector(`.container`)
     chat.innerHTML = ""
     
     for (i = 0; i<messages.length; i++){
         chat.innerHTML += 
         `
-        <div class="chat-bubble ${messages[i].sender}">
+        <div class="chat-bubble ${messages[i].source}">
             <p class="content">${messages[i].content}</p>
-            <p class="time">${messages[i].sentAt}</p>
         </div>
+        <p class="time ${messages[i].source}">${messages[i].sentAt}</p>
         `
     }
 }
 
 
 function getMessages () {
-    const now = new Date();
+    const now = (new Date());
 
     return [
         {
             sentAt: now.toISOString(),
             sender: "John Smith",
             content: "you up?",
-            
+            source: 'foreign'
         },
         {
             sentAt: now.toISOString(),
             sender: "Frank Smith",
             content: "Yeaaaaaah.",
-            
+            source: 'domestic'
         },
         {
             sentAt: now.toISOString(),
             sender: "John Smith",
             content: ";;;;;;;)",
+            source: 'foreign'
         },
     ]
 }
