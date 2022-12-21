@@ -2,12 +2,15 @@
 
 
 .chat-bubble {
-    background-color: blue;
+    background-color: whitesmoke;
     color:black;
     border-radius: 50%;
     font-size: .5em;
+    max-width: 7em;
+    text-align: center;
 }
 
 .time {
     font-size: .25em;
 }
+

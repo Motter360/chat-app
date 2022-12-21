@@ -1,28 +1,34 @@
 runPage();
 
-function runPage(){
-    runPusher();
+async function runPage(){
+    await runPusher();
 
-    let messages = getFakeMessages();
+    let messages = getMessages();
 
     renderMessages(messages)
 }
 
-function runPusher () {
-    // const pusher = new Pusher('key here', {
-    //     cluster: 'us2'
-    // });
-  
-    // const channel = pusher.subscribe('my-channel');
+async function runPusher () {
+    try {
+        const key = await fetch('./.env');
 
-    // channel.bind('my-event', function(data) {
-    //     alert(JSON.stringify(data));
-    // });
+        const pusher = new Pusher(key, {
+            cluster: 'us2'
+        });
+    
+        const channel = pusher.subscribe('my-channel');
 
-    // channel.trigger('my-event', {
-    //     // You can include any data you want to send with the event
-    //     message: 'Hello from the client-side!'
-    // });
+        channel.bind('message-sent', function(data) {
+            // add a new message to DOM
+        });
+
+        channel.trigger('message-sent', {
+            // You can include any data you want to send with the event
+            message: 'Hello from the client-side!'
+        });
+    } catch (e) {
+        //
+    }
 }
 
 // Make a function renderMessages that takes the messages array and spits it out to the dom
@@ -43,7 +49,7 @@ function renderMessages (messages) {
 }
 
 
-function getFakeMessages () {
+function getMessages () {
     const now = new Date();
 
     return [
